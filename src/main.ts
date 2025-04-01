@@ -2,50 +2,45 @@ import './style.css'
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
+let scene: THREE.Scene, 
+    renderer: THREE.WebGLRenderer, 
+    camera: THREE.Camera,
+    controls: OrbitControls
+    ;
 
-// set envrionment
-const scene = new THREE.Scene();
+function init() {
+  // set environment
+  scene = new THREE.Scene();
 
-const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-renderer.setPixelRatio(Math.min(Math.max(1, window.devicePixelRatio), 2));
-renderer.setClearColor( new THREE.Color( 0xdddddd ) );
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.setSize( window.innerWidth, window.innerHeight );
-document.body.appendChild( renderer.domElement );
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(Math.max(1, window.devicePixelRatio), 2));
+  renderer.setClearColor( new THREE.Color( 0xdddddd ) );
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.setSize( window.innerWidth, window.innerHeight );
+  document.body.appendChild( renderer.domElement );
 
-const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 500 );
-camera.position.set( 0, 0, 100 );
-camera.lookAt( 0, 0, 0 );
+  camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 500 );
+  camera.position.set( 0, 0, 100 );
+  camera.lookAt( 0, 0, 0 );
 
-const controls = new OrbitControls( camera, renderer.domElement );
-controls.update();
+  controls = new OrbitControls( camera, renderer.domElement );
+  controls.update();
 
-// add grid helper
-const size = 10;
-const divisions = 10;
-const gridHelper = new THREE.GridHelper( size, divisions );
-scene.add( gridHelper );
+  // add grid helper
+  const size = 10;
+  const divisions = 10;
+  const gridHelper = new THREE.GridHelper( size, divisions );
+  scene.add( gridHelper );
 
-// add axes helper
-const axesHelper = new THREE.AxesHelper( 10 );
-scene.add( axesHelper );
+  // add axes helper
+  const axesHelper = new THREE.AxesHelper( 10 );
+  scene.add( axesHelper );
 
+  // onclick event
+  window.addEventListener( 'click', onMouseEvent, false );
+}
 
-
-// add some objects
-const material = new THREE.LineBasicMaterial( { color: 0x0000ff } );
-const points = [];
-points.push( new THREE.Vector3( - 10, 0, 0 ) );
-points.push( new THREE.Vector3( 0, 10, 0 ) );
-points.push( new THREE.Vector3( 10, 0, 0 ) );
-
-const geometry = new THREE.BufferGeometry().setFromPoints( points );
-const line = new THREE.Line( geometry, material );
-scene.add( line );
-
-
-// onclick event
-window.addEventListener( 'click', (event) => {
+function onMouseEvent(event: MouseEvent){
   const mouse = new THREE.Vector2();
   mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
   mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
@@ -63,7 +58,6 @@ window.addEventListener( 'click', (event) => {
     console.log( 'intersected point: ', point );
   }
 }
-);
 
 // animate
 function animate() {
@@ -72,4 +66,21 @@ function animate() {
   renderer.render( scene, camera );
 }
 
+// add some objects
+function addSampleObjects() {
+  const material = new THREE.LineBasicMaterial( { color: 0x0000ff } );
+  const points = [];
+  points.push( new THREE.Vector3( - 10, 0, 0 ) );
+  points.push( new THREE.Vector3( 0, 10, 0 ) );
+  points.push( new THREE.Vector3( 10, 0, 0 ) );
+
+  const geometry = new THREE.BufferGeometry().setFromPoints( points );
+  const line = new THREE.Line( geometry, material );
+  scene.add( line );
+}
+
+
+
+init();
+addSampleObjects();
 animate();
