@@ -8,10 +8,29 @@ let scene: THREE.Scene,
     controls: OrbitControls
     ;
 
+const buttonPerspectiveView = document.getElementById('btn_perspective_view') as HTMLButtonElement;
+const buttonTopView = document.getElementById('btn_top_view') as HTMLButtonElement;
+const buttonFrontView = document.getElementById('btn_front_view') as HTMLButtonElement;
+const buttonRightView = document.getElementById('btn_right_view') as HTMLButtonElement;
+
+buttonPerspectiveView.addEventListener('click', () => {
+  toggleView('perspective');
+});
+buttonTopView.addEventListener('click', () => {
+  toggleView('top');
+});
+buttonFrontView.addEventListener('click', () => {
+  toggleView('front');
+});
+buttonRightView.addEventListener('click', () => {
+  toggleView('right');
+});
+
 function init() {
   // set environment
   scene = new THREE.Scene();
 
+  // set renderer
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(Math.max(1, window.devicePixelRatio), 2));
   renderer.setClearColor( new THREE.Color( 0xdddddd ) );
@@ -19,10 +38,10 @@ function init() {
   renderer.setSize( window.innerWidth, window.innerHeight );
   document.body.appendChild( renderer.domElement );
 
-  camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 500 );
-  camera.position.set( 0, 0, 100 );
-  camera.lookAt( 0, 0, 0 );
+  // set camera perspective
+  toggleView('perspective');
 
+  // set orbit controls
   controls = new OrbitControls( camera, renderer.domElement );
   controls.update();
 
@@ -44,9 +63,11 @@ function onMouseEvent(event: MouseEvent){
   const mouse = new THREE.Vector2();
   mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
   mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
   const raycaster = new THREE.Raycaster();
   raycaster.setFromCamera( mouse, camera );
   const intersects = raycaster.intersectObjects( scene.children );
+  
   if ( intersects.length > 0 ) {
     const intersect = intersects[ 0 ];
     const point = intersect.point;
@@ -79,6 +100,32 @@ function addSampleObjects() {
   scene.add( line );
 }
 
+function toggleView(viewtype?: string) {
+  if (viewtype) {
+    if (viewtype === 'perspective') {
+      camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 500 );
+      camera.position.set( 0, 0, 100 );
+      camera.lookAt( 0, 0, 0 );
+    } else if (viewtype === 'top') {
+      camera = new THREE.OrthographicCamera( window.innerWidth / - 20, window.innerWidth / 20, window.innerHeight / 20, window.innerHeight / - 20, 1, 500 );
+      camera.position.set( 0, 100, 0 );
+      camera.lookAt( 0, 0, 0 );
+    } else if (viewtype === 'front') {
+      camera = new THREE.OrthographicCamera( window.innerWidth / - 20, window.innerWidth / 20, window.innerHeight / 20, window.innerHeight / - 20, 1, 500 );
+      camera.position.set( 0, 0, 100 );
+      camera.lookAt( 0, 0, 0 );
+    } else if (viewtype === 'right') {
+      camera = new THREE.OrthographicCamera( window.innerWidth / - 20, window.innerWidth / 20, window.innerHeight / 20, window.innerHeight / - 20, 1, 500 );
+      camera.position.set( 100, 0, 0 );
+      camera.lookAt( 0, 0, 0 );
+    } else {
+      // error
+      console.error('Invalid view type');
+    }
+    controls = new OrbitControls( camera, renderer.domElement );
+    controls.update();
+  }
+}
 
 
 init();
