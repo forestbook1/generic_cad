@@ -5,16 +5,42 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>generic cad</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    #app {
+      width: 100vw;
+      height: 100vh;
+    }
+    #voxelButton {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 10;
+      padding: 8px 12px;
+      background: #2e86de;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #voxelButton.active {
+      background: #27ae60;
+    }
+  </style>
 </head>
 
 <body>
-  <div id="app">
-    <button id="btn_perspective_view">Perspective</button>
-    <button id="btn_top_view">Top</button>
-    <button id="btn_front_view">Front</button>
-    <button id="btn_right_view">Right</button>
-  </div>
+  <div id="app"></div>
   <script type="module" src="/src/main.ts"></script>
+  <button id="voxelButton">ボクセル配置モード</button>
+  <button id="btn_perspective_view">Perspective</button>
+  <button id="btn_top_view">Top</button>
+  <button id="btn_front_view">Front</button>
+  <button id="btn_right_view">Right</button>
 </body>
 
 </html>
