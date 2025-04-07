@@ -1,7 +1,8 @@
 import * as THREE from 'three';
+import { Voxel } from './voxel';
 
 export class VoxelManager {
-  private voxels: Map<string, THREE.Mesh> = new Map();
+  private voxels: Map<string, Voxel> = new Map();
 
   constructor(private scene: THREE.Scene) {}
 
@@ -9,11 +10,8 @@ export class VoxelManager {
     const key = this.hash(x, y, z);
     if (this.voxels.has(key)) return;
 
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshStandardMaterial({ color: 0x00aaff });
-    const voxel = new THREE.Mesh(geometry, material);
-    voxel.position.set(x, y, z);
-    this.scene.add(voxel);
+    const voxel = new Voxel(new THREE.Vector3(x, y, z), 0x2CD33C);
+    this.scene.add(voxel.mesh);
     this.voxels.set(key, voxel);
   }
 
@@ -27,7 +25,7 @@ export class VoxelManager {
   }
 
   getAllVoxelMeshes(): THREE.Mesh[] {
-    return Array.from(this.voxels.values());
+    return Array.from(this.voxels.values()).map(voxel => voxel.mesh);
   }
 
   private hash(x: number, y: number, z: number): string {

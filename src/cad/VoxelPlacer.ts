@@ -1,7 +1,10 @@
 import * as THREE from 'three';
+import { Tool } from '../tools/Tool';
 import { VoxelManager } from './VoxelManager';
 
-export class VoxelPlacer {
+export class VoxelPlacer implements Tool {
+  name = 'VoxelPlacer';
+
   private raycaster = new THREE.Raycaster();
   private mouse = new THREE.Vector2();
   private ground: THREE.Mesh;
@@ -45,13 +48,13 @@ export class VoxelPlacer {
 
       const normal = intersect.face?.normal.clone();
       if (!normal) return;
-
+      
       // 面の法線に沿って1マス積む
       const position = intersect.point.clone().add(normal.multiplyScalar(0.5));
       const x = Math.round(position.x);
       const y = Math.round(position.y);
       const z = Math.round(position.z);
-
+      
       this.voxelManager.addVoxel(x, y, z);
     }
   };

@@ -1,7 +1,4 @@
-import './style.css'
 import * as THREE from 'three';
-import { Voxel } from './voxel';
-
 import { Renderer } from './core/Renderer';
 import { SceneManager } from './core/SceneManager';
 import { CameraManager } from './core/CameraManager';
@@ -9,8 +6,13 @@ import { ControlsManager } from './core/ControlsManager';
 //import { GeometryFactory } from './cad/GeometryFactory';
 import { SelectionManager } from './cad/SelectionManager';
 import { MouseHandler } from './events/MouseHandler';
+import { ToolManager } from './tools/ToolManager';
+import { setupToolUI } from './ui/ToolUI';
+
+// todo : 個別ツール登録関連をappから追い出し
 import { VoxelManager } from './cad/VoxelManager';
 import { VoxelPlacer } from './cad/VoxelPlacer';
+
 
 export class App {
   private renderer: Renderer;
@@ -22,6 +24,7 @@ export class App {
   private voxelManager: VoxelManager;
   private voxelPlacer: VoxelPlacer;
   private isPlacing: boolean = false;
+  private toolManager: ToolManager;
   
   constructor(private container: HTMLElement) {
     this.renderer = new Renderer(container);
@@ -33,8 +36,12 @@ export class App {
     this.voxelManager = new VoxelManager(this.sceneManager.scene);
     this.voxelPlacer = new VoxelPlacer(this.cameraManager.camera, this.renderer.domElement, this.sceneManager.scene, this.voxelManager);
 
-    this.voxelManager = new VoxelManager(this.sceneManager.scene);
-    this.voxelPlacer = new VoxelPlacer(this.cameraManager.camera, this.renderer.domElement, this.sceneManager.scene, this.voxelManager);
+    // set tools
+    // todo: 個別読み込みをやめる
+    this.toolManager = new ToolManager();
+    this.toolManager.registerTool(this.voxelPlacer);
+
+    setupToolUI(this.toolManager);
   }
   
   addPointSphere(position: THREE.Vector3, color: number) {
@@ -81,48 +88,28 @@ export class App {
     //controls = new OrbitControls( camera, renderer.domElement );
     //controls.update();
   }
-}
-*/
-
-addVoxel(position: THREE.Vector3, color: number) {
-  const voxel = new Voxel(position, color);
-  this.sceneManager.scene.add(voxel.mesh);
-  return voxel;
-}
-
-addGroundPlane() {
-  const geometry = new THREE.PlaneGeometry( 100, 100 );
-  const material = new THREE.MeshStandardMaterial( { color: 0xffffff, side : THREE.DoubleSide } );
-  const plane = new THREE.Mesh( geometry, material );
-  plane.rotation.x = Math.PI / 2;
-  plane.position.set(0, -1, 0);
-  this.sceneManager.scene.add( plane );
-}
-
-private animate = () => {
-  requestAnimationFrame(this.animate);
-  this.controls.update();
-  this.renderer.render(this.sceneManager.scene, this.cameraManager.camera);
-};
-
-start() {
-  
-
-  
-  /*
-  //this.addGroundPlane();
-  this.addVoxel(new THREE.Vector3(0, 0, 0), 0xff0000);
-  this.addVoxel(new THREE.Vector3(1, 0, 0), 0x00ff00);
-  this.addVoxel(new THREE.Vector3(0, 1, 0), 0x0000ff);
-  this.addVoxel(new THREE.Vector3(1, 1, 0), 0xffff00);
-  this.addVoxel(new THREE.Vector3(0, 0, 1), 0xff00ff);
-  this.addVoxel(new THREE.Vector3(1, 0, 1), 0x00ffff);
-  this.addVoxel(new THREE.Vector3(0, 1, 1), 0x000000);
-  this.addVoxel(new THREE.Vector3(1, 1, 1), 0xffffff);
   */
-  this.setupUI();
-  this.animate();
-}
+
+  addGroundPlane() {
+    const geometry = new THREE.PlaneGeometry( 100, 100 );
+    const material = new THREE.MeshStandardMaterial( { color: 0xffffff, side : THREE.DoubleSide } );
+    const plane = new THREE.Mesh( geometry, material );
+    plane.rotation.x = Math.PI / 2;
+    plane.position.set(0, -1, 0);
+    this.sceneManager.scene.add( plane );
+  }
+
+  private animate = () => {
+    requestAnimationFrame(this.animate);
+    this.controls.update();
+    this.renderer.render(this.sceneManager.scene, this.cameraManager.camera);
+  };
+
+  start() {
+    
+    //this.setupUI();
+    this.animate();
+  }
 }
 
 
