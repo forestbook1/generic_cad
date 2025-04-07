@@ -3,7 +3,7 @@ import * as THREE from 'three';
 export class SelectionManager {
   private selected: THREE.Object3D | null = null;
 
-  constructor(private scene: THREE.Scene) {}
+  constructor() {}
 
   select(object: THREE.Object3D) {
     if (this.selected === object) return;

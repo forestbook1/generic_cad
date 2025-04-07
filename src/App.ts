@@ -4,8 +4,8 @@ import { SceneManager } from './core/SceneManager';
 import { CameraManager } from './core/CameraManager';
 import { ControlsManager } from './core/ControlsManager';
 //import { GeometryFactory } from './cad/GeometryFactory';
-import { SelectionManager } from './cad/SelectionManager';
-import { MouseHandler } from './events/MouseHandler';
+//import { SelectionManager } from './cad/SelectionManager';
+//import { MouseHandler } from './events/MouseHandler';
 import { ToolManager } from './tools/ToolManager';
 import { setupToolUI } from './ui/ToolUI';
 
@@ -19,18 +19,18 @@ export class App {
   private sceneManager: SceneManager;
   private cameraManager: CameraManager;
   private controls: ControlsManager;
-  private selectionManager: SelectionManager;
+  //private selectionManager: SelectionManager;
   //private mouseHandler: MouseHandler;
   private toolManager: ToolManager;
   private voxelManager: VoxelManager;
   private voxelPlacer: VoxelPlacer;
   
-  constructor(private container: HTMLElement) {
+  constructor(container: HTMLElement) {
     this.renderer = new Renderer(container);
     this.sceneManager = new SceneManager();
     this.cameraManager = new CameraManager(container);
     this.controls = new ControlsManager(this.cameraManager.camera, this.renderer.domElement);
-    this.selectionManager = new SelectionManager(this.sceneManager.scene);
+    //this.selectionManager = new SelectionManager(this.sceneManager.scene);
     //this.mouseHandler = new MouseHandler(this.cameraManager.camera, this.renderer.domElement, this.sceneManager.scene);
     this.voxelManager = new VoxelManager(this.sceneManager.scene);
     this.voxelPlacer = new VoxelPlacer(this.cameraManager.camera, this.renderer.domElement, this.sceneManager.scene, this.voxelManager);

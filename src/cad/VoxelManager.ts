@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { Voxel } from './voxel';
+import { Voxel } from './Voxel';
 
 export class VoxelManager {
   private voxels: Map<string, Voxel> = new Map();

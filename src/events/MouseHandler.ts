@@ -4,7 +4,7 @@ import { SelectionManager } from '../cad/SelectionManager';
 export class MouseHandler {
   private raycaster = new THREE.Raycaster();
   private mouse = new THREE.Vector2();
-  private selectionManager = new SelectionManager(this.scene);
+  private selectionManager = new SelectionManager();
 
   constructor(
     private camera: THREE.Camera,
