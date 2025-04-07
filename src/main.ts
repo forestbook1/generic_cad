@@ -1,6 +1,7 @@
 import { App } from './App';
+import './styles/style.css'
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', () => { 
   const container = document.getElementById('app');
   if (!container) {
     throw new Error('No container element with id "app"');

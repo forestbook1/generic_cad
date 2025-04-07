@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+//import * as THREE from 'three';
 import { Renderer } from './core/Renderer';
 import { SceneManager } from './core/SceneManager';
 import { CameraManager } from './core/CameraManager';
@@ -21,10 +21,9 @@ export class App {
   private controls: ControlsManager;
   private selectionManager: SelectionManager;
   //private mouseHandler: MouseHandler;
+  private toolManager: ToolManager;
   private voxelManager: VoxelManager;
   private voxelPlacer: VoxelPlacer;
-  private isPlacing: boolean = false;
-  private toolManager: ToolManager;
   
   constructor(private container: HTMLElement) {
     this.renderer = new Renderer(container);
@@ -42,24 +41,6 @@ export class App {
     this.toolManager.registerTool(this.voxelPlacer);
 
     setupToolUI(this.toolManager);
-  }
-  
-  addPointSphere(position: THREE.Vector3, color: number) {
-    const sphereGeometry = new THREE.SphereGeometry( 0.15, 32, 32 );
-    const sphereMaterial = new THREE.MeshBasicMaterial( { color } );
-    const sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
-    sphere.position.copy( position );
-    this.sceneManager.scene.add( sphere );
-    return sphere;
-  }
-  
-  private setupUI() {
-    const voxelButton = document.getElementById('voxelButton')!;
-    voxelButton.addEventListener('click', () => {
-      this.isPlacing = !this.isPlacing;
-      this.voxelPlacer.setEnabled(this.isPlacing);
-      voxelButton.classList.toggle('active', this.isPlacing);
-    });
   }
 
   /*
@@ -90,15 +71,6 @@ export class App {
   }
   */
 
-  addGroundPlane() {
-    const geometry = new THREE.PlaneGeometry( 100, 100 );
-    const material = new THREE.MeshStandardMaterial( { color: 0xffffff, side : THREE.DoubleSide } );
-    const plane = new THREE.Mesh( geometry, material );
-    plane.rotation.x = Math.PI / 2;
-    plane.position.set(0, -1, 0);
-    this.sceneManager.scene.add( plane );
-  }
-
   private animate = () => {
     requestAnimationFrame(this.animate);
     this.controls.update();
@@ -106,8 +78,6 @@ export class App {
   };
 
   start() {
-    
-    //this.setupUI();
     this.animate();
   }
 }
