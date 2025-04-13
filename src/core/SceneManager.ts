@@ -28,8 +28,8 @@ export class SceneManager {
 
   setGridHelper( visible : boolean ) {
     if (visible) {
-      const size = 10;
-      const divisions = 10;
+      const size = 1000;
+      const divisions = 1000;
       const gridHelper = new THREE.GridHelper( size, divisions );
       this.scene.add( gridHelper );
     } else {
@@ -42,7 +42,7 @@ export class SceneManager {
 
   setAxesHelper( visible : boolean ) {
     if (visible) {
-      const axesHelper = new THREE.AxesHelper( 10 );
+      const axesHelper = new THREE.AxesHelper( 1000 );
       this.scene.add( axesHelper );
     } else {
       const axesHelper = this.scene.getObjectByName('axesHelper');

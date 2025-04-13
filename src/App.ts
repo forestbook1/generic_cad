@@ -8,10 +8,11 @@ import { ControlsManager } from './core/ControlsManager';
 //import { MouseHandler } from './events/MouseHandler';
 import { ToolManager } from './tools/ToolManager';
 import { setupToolUI } from './ui/ToolUI';
+import { ColorPickerUI } from './ui/ColorPickerUI';
 
 // todo : 個別ツール登録関連をappから追い出し
 import { VoxelManager } from './cad/VoxelManager';
-import { VoxelPlacer } from './cad/VoxelPlacer';
+import { VoxelPlacerTool } from './tools/VoxelPlacerTool';
 
 
 export class App {
@@ -22,8 +23,9 @@ export class App {
   //private selectionManager: SelectionManager;
   //private mouseHandler: MouseHandler;
   private toolManager: ToolManager;
+  private colorPicker: ColorPickerUI;
   private voxelManager: VoxelManager;
-  private voxelPlacer: VoxelPlacer;
+  private voxelPlacer: VoxelPlacerTool;
   
   constructor(container: HTMLElement) {
     this.renderer = new Renderer(container);
@@ -33,12 +35,13 @@ export class App {
     //this.selectionManager = new SelectionManager(this.sceneManager.scene);
     //this.mouseHandler = new MouseHandler(this.cameraManager.camera, this.renderer.domElement, this.sceneManager.scene);
     this.voxelManager = new VoxelManager(this.sceneManager.scene);
-    this.voxelPlacer = new VoxelPlacer(this.cameraManager.camera, this.renderer.domElement, this.sceneManager.scene, this.voxelManager);
+    this.voxelPlacer = new VoxelPlacerTool(this.cameraManager.camera, this.renderer.domElement, this.sceneManager.scene, this.controls, this.voxelManager);
 
     // set tools
     // todo: 個別読み込みをやめる
     this.toolManager = new ToolManager();
     this.toolManager.registerTool(this.voxelPlacer);
+    this.colorPicker = new ColorPickerUI();
 
     setupToolUI(this.toolManager);
   }

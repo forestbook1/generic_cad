@@ -1,10 +1,10 @@
 import * as THREE from 'three';
 
 export class Voxel extends THREE.Object3D {
-  public color: number;
+  public color: THREE.Color;
   public mesh: THREE.Mesh;
 
-  constructor(position: THREE.Vector3, color: number) {
+  constructor(position: THREE.Vector3, color: THREE.Color) {
     super();
     this.color = color;
     const geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -13,7 +13,7 @@ export class Voxel extends THREE.Object3D {
     this.mesh = new THREE.Mesh(geometry, material);
   }
 
-  public setColor(color: number) {
+  public setColor(color: THREE.Color) {
     (this.mesh.material as THREE.MeshBasicMaterial).color.set(color);
   }
 }

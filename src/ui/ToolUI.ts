@@ -1,12 +1,14 @@
 import { ToolManager } from '../tools/ToolManager';
 
 export function setupToolUI(toolManager: ToolManager) {
+  // create dom element
   const container = document.createElement('div');
   container.id = 'toolButtons';
   container.style.position = 'absolute';
   container.style.top = '10px';
   container.style.left = '10px';
 
+  // create buttons for each tool
   toolManager.getToolList().forEach(tool => {
     const btn = document.createElement('button');
     btn.className = 'toolButton';

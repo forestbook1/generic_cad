@@ -6,13 +6,14 @@ export class VoxelManager {
 
   constructor(private scene: THREE.Scene) {}
 
-  addVoxel(x: number, y: number, z: number) {
+  addVoxel(x: number, y: number, z: number, color: THREE.Color) {
     const key = this.hash(x, y, z);
     if (this.voxels.has(key)) return;
 
-    const voxel = new Voxel(new THREE.Vector3(x, y, z), 0x2CD33C);
+    const voxel = new Voxel(new THREE.Vector3(x, y, z), color);
     this.scene.add(voxel.mesh);
     this.voxels.set(key, voxel);
+    console.log(`Voxel Count: ${this.voxels.size}`);
   }
 
   removeVoxel(x: number, y: number, z: number) {
@@ -22,6 +23,7 @@ export class VoxelManager {
       this.scene.remove(voxel);
       this.voxels.delete(key);
     }
+    console.log(`Voxel Count: ${this.voxels.size}`);
   }
 
   getAllVoxelMeshes(): THREE.Mesh[] {
